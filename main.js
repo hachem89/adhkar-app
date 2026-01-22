@@ -271,7 +271,10 @@ async function checkForUpdates(manual = false) {
     const latestVersion = response.data.version;
     const currentVersion = app.getVersion();
     
-    if (latestVersion !== currentVersion) {
+    // Simple version comparison (e.g., "1.0.1" vs "1.0.0")
+    const isNewer = latestVersion.split('.').map(Number).join('') > currentVersion.split('.').map(Number).join('');
+
+    if (isNewer) {
       const downloadUrl = response.data.downloadUrl || 'https://github.com/yourusername/adhkar-app/releases';
       
       tray.displayBalloon({
