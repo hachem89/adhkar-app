@@ -163,6 +163,11 @@ If you don't want the app to start automatically:
 - Verify `adhkar.json` exists and is properly formatted
 - Check that the interval hasn't been set too long
 
+### Windows "Unknown Publisher" Warning
+Since this app is not digitally signed, Windows may show a warning. To install:
+1. Click **"More info"**.
+2. Click **"Run anyway"**.
+
 ### Arabic text not displaying correctly
 - The app includes support for Arabic fonts
 - Make sure your system has Arabic font support installed

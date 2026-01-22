@@ -50,3 +50,8 @@ Now you need to tell the app that a new version exists.
 1. GitHub Pages will detect the change to `version.json` and update the live file (usually takes 1-2 minutes).
 2. Users' apps check this file periodically.
 3. When they see `"version": "1.0.1"` is higher than their installed `1.0.0`, they get a notification!
+
+## Note on Windows Security
+Because the app is not digitally signed, your friends will see a **"Windows protected your PC"** or **"Unknown Publisher"** warning.
+**To bypass it:** They must click **"More info"** and then **"Run anyway"**. 
+This is normal for small, independent open-source projects!
