@@ -1,5 +1,5 @@
 {
-  "version": "1.0.3",
-  "downloadUrl": "https://github.com/hachem89/adhkar-app/releases/latest/download/Adhkar.Reminder.Setup.1.0.3.exe",
-  "releaseNotes": "TEST RELEASE: Verifying the new update check feedback system. You should see a new test dhikr starting with '✨ TEST'!"
+  "version": "1.0.4",
+  "downloadUrl": "https://github.com/hachem89/adhkar-app/releases/latest/download/Adhkar.Reminder.Setup.1.0.4.exe",
+  "releaseNotes": "FIXED: You can now click the update notification to open the download page directly! 🚀"
 }

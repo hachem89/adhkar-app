@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, screen, ipcMain } = require('electron');
+const { app, BrowserWindow, Tray, Menu, screen, ipcMain, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
@@ -9,6 +9,7 @@ let adhkarData = null;
 let popupWindow = null;
 let settingsWindow = null;
 let intervalTimer = null;
+let lastDownloadUrl = null;
 
 // Use resource path for data to ensure it works when packaged
 function getResourcePath(relativePath) {
@@ -248,6 +249,13 @@ function createTray() {
     
     tray.setToolTip('Adhkar Reminder');
     tray.setContextMenu(contextMenu);
+
+    // Open download URL when update notification is clicked
+    tray.on('balloon-click', () => {
+      if (lastDownloadUrl) {
+        shell.openExternal(lastDownloadUrl);
+      }
+    });
   } catch (error) {
     console.error('Failed to create tray:', error);
   }
@@ -282,7 +290,7 @@ async function checkForUpdates(manual = false) {
     const isNewer = latestVersion.split('.').map(Number).join('') > currentVersion.split('.').map(Number).join('');
 
     if (isNewer) {
-      const downloadUrl = response.data.downloadUrl || 'https://github.com/hachem89/adhkar-app/releases';
+      lastDownloadUrl = response.data.downloadUrl || 'https://github.com/hachem89/adhkar-app/releases';
       
       tray.displayBalloon({
         title: 'Update Available',
