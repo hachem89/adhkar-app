@@ -264,14 +264,21 @@ function enableAutoStart() {
 // Check for updates
 async function checkForUpdates(manual = false) {
   try {
-    // Replace this URL with your actual version check endpoint
-    const updateCheckUrl = 'https://hachem89.github.io/adhkar-app/version.json';
+    const iconPath = getResourcePath(path.join('build', 'icon.png'));
     
+    if (manual) {
+      tray.displayBalloon({
+        title: 'Update Check',
+        content: 'Checking for updates...',
+        icon: iconPath
+      });
+    }
+
+    const updateCheckUrl = 'https://hachem89.github.io/adhkar-app/version.json';
     const response = await axios.get(updateCheckUrl, { timeout: 5000 });
     const latestVersion = response.data.version;
     const currentVersion = app.getVersion();
     
-    // Simple version comparison (e.g., "1.0.1" vs "1.0.0")
     const isNewer = latestVersion.split('.').map(Number).join('') > currentVersion.split('.').map(Number).join('');
 
     if (isNewer) {
@@ -280,25 +287,28 @@ async function checkForUpdates(manual = false) {
       tray.displayBalloon({
         title: 'Update Available',
         content: `Version ${latestVersion} is available. Click to download.`,
-        icon: path.join(__dirname, 'build', 'icon.png')
+        icon: iconPath
       });
       
-      // You could open the download URL here if desired
       console.log(`Update available: ${latestVersion}. Download at: ${downloadUrl}`);
     } else if (manual) {
-      tray.displayBalloon({
+      const { dialog } = require('electron');
+      dialog.showMessageBox({
+        type: 'info',
         title: 'No Updates',
-        content: 'You are running the latest version.',
-        icon: path.join(__dirname, 'build', 'icon.png')
+        message: 'You are running the latest version.',
+        buttons: ['OK']
       });
     }
   } catch (error) {
     console.error('Error checking for updates:', error.message);
     if (manual) {
-      tray.displayBalloon({
+      const { dialog } = require('electron');
+      dialog.showMessageBox({
+        type: 'error',
         title: 'Update Check Failed',
-        content: 'Could not check for updates. Please try again later.',
-        icon: path.join(__dirname, 'build', 'icon.png')
+        message: 'Could not check for updates. Please check your internet connection and try again.',
+        buttons: ['OK']
       });
     }
   }
