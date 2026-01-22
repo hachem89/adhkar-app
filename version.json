@@ -1,5 +1,5 @@
 {
-  "version": "1.0.4",
-  "downloadUrl": "https://github.com/hachem89/adhkar-app/releases/latest/download/Adhkar.Reminder.Setup.1.0.4.exe",
-  "releaseNotes": "FIXED: You can now click the update notification to open the download page directly! 🚀"
+  "version": "1.0.5",
+  "downloadUrl": "https://github.com/hachem89/adhkar-app/releases/latest/download/Adhkar.Reminder.Setup.1.0.5.exe",
+  "releaseNotes": "FINAL TEST: This version verifies that the update notification click now correctly opens the browser. 🌐✨"
 }
