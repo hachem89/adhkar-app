@@ -194,7 +194,7 @@ function enableAutoStart() {
 async function checkForUpdates(manual = false) {
   try {
     // Replace this URL with your actual version check endpoint
-    const updateCheckUrl = 'https://raw.githubusercontent.com/yourusername/adhkar-app/main/version.json';
+    const updateCheckUrl = 'https://hachem89.github.io/adhkar-app/version.json';
     
     const response = await axios.get(updateCheckUrl, { timeout: 5000 });
     const latestVersion = response.data.version;
