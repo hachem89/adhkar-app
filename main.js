@@ -275,7 +275,7 @@ async function checkForUpdates(manual = false) {
     const isNewer = latestVersion.split('.').map(Number).join('') > currentVersion.split('.').map(Number).join('');
 
     if (isNewer) {
-      const downloadUrl = response.data.downloadUrl || 'https://github.com/yourusername/adhkar-app/releases';
+      const downloadUrl = response.data.downloadUrl || 'https://github.com/hachem89/adhkar-app/releases';
       
       tray.displayBalloon({
         title: 'Update Available',
