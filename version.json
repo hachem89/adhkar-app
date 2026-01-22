@@ -1,5 +1,5 @@
 {
-  "version": "1.0.6",
-  "downloadUrl": "https://github.com/hachem89/adhkar-app/releases/latest/download/Adhkar.Reminder.Setup.1.0.6.exe",
-  "releaseNotes": "OFFICIAL RELEASE: Includes the new Settings Window, 6 position choices, custom color picker, and fixed notification click support! ✨"
+  "version": "1.0.7",
+  "downloadUrl": "https://github.com/hachem89/adhkar-app/releases/latest/download/Adhkar.Reminder.Setup.1.0.7.exe",
+  "releaseNotes": "FINAL STABLE RELEASE: Fixed the startup window issue and includes the complete Settings suite! ✨"
 }

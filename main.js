@@ -261,12 +261,19 @@ function createTray() {
   }
 }
 
-// Enable auto-start on system boot
+// Enable auto-start on system boot (Production only)
 function enableAutoStart() {
-  app.setLoginItemSettings({
-    openAtLogin: true,
-    openAsHidden: true
-  });
+  if (app.isPackaged) {
+    app.setLoginItemSettings({
+      openAtLogin: true,
+      openAsHidden: true
+    });
+  } else {
+    // Disable it in development to prevent that default window on restart
+    app.setLoginItemSettings({
+      openAtLogin: false
+    });
+  }
 }
 
 // Check for updates
