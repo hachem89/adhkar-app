@@ -11,9 +11,10 @@ let intervalTimer = null;
 
 // Use resource path for data to ensure it works when packaged
 function getResourcePath(relativePath) {
-  return app.isPackaged 
-    ? path.join(process.resourcesPath, relativePath)
-    : path.join(__dirname, relativePath);
+  // Try resourcesPath (for extraResources) first, then fallback to __dirname
+  const prodPath = path.join(process.resourcesPath, relativePath);
+  if (fs.existsSync(prodPath)) return prodPath;
+  return path.join(__dirname, relativePath);
 }
 
 // Load adhkar data
@@ -25,6 +26,11 @@ function loadAdhkarData() {
     console.log('Adhkar data loaded successfully from: ' + dataPath);
   } catch (error) {
     console.error('Error loading adhkar data:', error);
+    // Ensure we have some data to prevent crashes
+    adhkarData = { 
+      settings: { interval_seconds: 600, popup_display_seconds: 8, font_size: 19 },
+      adhkar: ["اللَّهُ أَكْبَرُ"]
+    };
   }
 }
 
@@ -34,13 +40,13 @@ function createPopupWindow() {
     popupWindow.close();
   }
 
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  const { x, y, width, height } = screen.getPrimaryDisplay().workArea;
   
   popupWindow = new BrowserWindow({
     width: 550,  // Large enough for max content (500px + padding)
     height: 200,
-    x: width - 570,  // Adjusted for new width
-    y: height - 150,
+    x: x + width - 570,
+    y: y + height - 220,
     frame: false,
     transparent: true,
     alwaysOnTop: true,
@@ -83,15 +89,16 @@ function showNextDhikr() {
   // Listen for resize request from renderer
   ipcMain.once('resize-window', (event, calculatedWidth) => {
     if (currentWindow && !currentWindow.isDestroyed()) {
-      const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+      const { x, y, width, height } = screen.getPrimaryDisplay().workArea;
       const newWidth = Math.min(Math.max(calculatedWidth, 200), 550); // Between 200-550px
-      const xPosition = width - newWidth - 20; // 20px margin from right edge
+      const xPosition = x + width - newWidth - 20; // 20px margin from right edge
+      const yPosition = y + height - 220; // Safety margin from bottom
       
       currentWindow.setBounds({
         width: newWidth,
         height: 200,
-        x: xPosition,
-        y: height - 150
+        x: Math.round(xPosition),
+        y: Math.round(yPosition)
       });
     }
   });
@@ -149,44 +156,48 @@ function scheduleDhikrPopups() {
 
 // Create system tray
 function createTray() {
-  // Create a simple icon (you can replace with a proper icon file)
-  const iconPath = getResourcePath(path.join('build', 'icon.png'));
-  
-  tray = new Tray(iconPath);
-  
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Adhkar Reminder (Running)',
-      enabled: false
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Show Dhikr Now',
-      click: () => {
-        showNextDhikr();
+  try {
+    const iconPath = getResourcePath(path.join('build', 'icon.png'));
+    console.log('Tray icon path:', iconPath);
+    
+    tray = new Tray(iconPath);
+    
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Adhkar Reminder (Running)',
+        enabled: false
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Show Dhikr Now',
+        click: () => {
+          showNextDhikr();
+        }
+      },
+      {
+        label: 'Check for Updates',
+        click: () => {
+          checkForUpdates(true);
+        }
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Exit',
+        click: () => {
+          app.quit();
+        }
       }
-    },
-    {
-      label: 'Check for Updates',
-      click: () => {
-        checkForUpdates(true);
-      }
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Exit',
-      click: () => {
-        app.quit();
-      }
-    }
-  ]);
-  
-  tray.setToolTip('Adhkar Reminder');
-  tray.setContextMenu(contextMenu);
+    ]);
+    
+    tray.setToolTip('Adhkar Reminder');
+    tray.setContextMenu(contextMenu);
+  } catch (error) {
+    console.error('Failed to create tray:', error);
+  }
 }
 
 // Enable auto-start on system boot
