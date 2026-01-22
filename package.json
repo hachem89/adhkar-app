@@ -1,6 +1,6 @@
 {
   "name": "adhkar-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Desktop app that displays periodic Islamic dhikr reminders",
   "main": "main.js",
   "scripts": {
