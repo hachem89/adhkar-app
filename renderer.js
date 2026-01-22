@@ -9,6 +9,10 @@ window.electronAPI.onShowDhikr((data) => {
   // Set font size from settings
   dhikrText.style.fontSize = `${data.fontSize}px`;
   
+  // Apply visual settings
+  if (data.backgroundColor) popupContainer.style.backgroundColor = data.backgroundColor;
+  if (data.borderColor) popupContainer.style.borderColor = data.borderColor;
+  
   // Calculate required width
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');

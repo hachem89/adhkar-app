@@ -7,6 +7,7 @@ let tray = null;
 let currentDhikrIndex = 0;
 let adhkarData = null;
 let popupWindow = null;
+let settingsWindow = null;
 let intervalTimer = null;
 
 // Use resource path for data to ensure it works when packaged
@@ -41,12 +42,21 @@ function createPopupWindow() {
   }
 
   const { x, y, width, height } = screen.getPrimaryDisplay().workArea;
+  const settings = adhkarData.settings;
+  const pos = settings.popup_position || 'bottom-right';
   
+  let initialX = x + width - 570;
+  let initialY = y + height - 170;
+
+  if (pos.startsWith('top')) initialY = y + 20;
+  if (pos.includes('left')) initialX = x + 20;
+  if (pos.includes('middle')) initialX = x + (width - 550) / 2;
+
   popupWindow = new BrowserWindow({
-    width: 550,  // Large enough for max content (500px + padding)
+    width: 550,
     height: 200,
-    x: x + width - 570,
-    y: y + height - 220,
+    x: Math.round(initialX),
+    y: Math.round(initialY),
     frame: false,
     transparent: true,
     alwaysOnTop: true,
@@ -70,6 +80,33 @@ function createPopupWindow() {
   });
 }
 
+// Create settings window
+function createSettingsWindow() {
+  if (settingsWindow) {
+    settingsWindow.focus();
+    return;
+  }
+
+  settingsWindow = new BrowserWindow({
+    width: 450,
+    height: 550,
+    title: 'Adhkar Settings',
+    frame: true,
+    resizable: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: false,
+      contextIsolation: true
+    }
+  });
+
+  settingsWindow.loadFile('settings.html');
+  
+  settingsWindow.on('closed', () => {
+    settingsWindow = null;
+  });
+}
+
 // Show next dhikr
 function showNextDhikr() {
   if (!adhkarData || !adhkarData.adhkar || adhkarData.adhkar.length === 0) {
@@ -90,9 +127,17 @@ function showNextDhikr() {
   ipcMain.once('resize-window', (event, calculatedWidth) => {
     if (currentWindow && !currentWindow.isDestroyed()) {
       const { x, y, width, height } = screen.getPrimaryDisplay().workArea;
-      const newWidth = Math.min(Math.max(calculatedWidth, 200), 550); // Between 200-550px
-      const xPosition = x + width - newWidth - 20; // 20px margin from right edge
-      const yPosition = y + height - 220; // Safety margin from bottom
+      const newWidth = Math.min(Math.max(calculatedWidth, 200), 550);
+      const settings = adhkarData.settings;
+      const pos = settings.popup_position || 'bottom-right';
+      
+      let xPosition = x + width - newWidth - 20; // Default Right
+      let yPosition = y + height - 170; // Default Bottom
+      
+      if (pos.includes('left')) xPosition = x + 20;
+      if (pos.includes('middle')) xPosition = x + (width - newWidth) / 2;
+      
+      if (pos.startsWith('top')) yPosition = y + 20;
       
       currentWindow.setBounds({
         width: newWidth,
@@ -115,7 +160,9 @@ function showNextDhikr() {
     currentWindow.webContents.send('show-dhikr', {
       dhikr: dhikr,
       displaySeconds: settings.popup_display_seconds,
-      fontSize: settings.font_size
+      fontSize: settings.font_size,
+      backgroundColor: settings.background_color,
+      borderColor: settings.border_color
     });
 
     // Move to next dhikr
@@ -174,6 +221,12 @@ function createTray() {
         label: 'Show Dhikr Now',
         click: () => {
           showNextDhikr();
+        }
+      },
+      {
+        label: 'Settings',
+        click: () => {
+          createSettingsWindow();
         }
       },
       {
@@ -247,6 +300,27 @@ async function checkForUpdates(manual = false) {
     }
   }
 }
+
+// Listen for settings requests
+ipcMain.handle('get-settings', () => {
+  return adhkarData.settings;
+});
+
+// Save settings handler
+ipcMain.on('save-settings', (event, newSettings) => {
+  adhkarData.settings = {
+    ...adhkarData.settings,
+    ...newSettings
+  };
+  
+  // Save to file
+  const dataPath = getResourcePath('adhkar.json');
+  fs.writeFileSync(dataPath, JSON.stringify(adhkarData, null, 2));
+  
+  // Restart schedule with new interval
+  scheduleDhikrPopups();
+  console.log('Settings updated and schedule restarted');
+});
 
 // App initialization
 app.whenReady().then(() => {

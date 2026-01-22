@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adhkar Settings</title>
+    <link rel="stylesheet" href="settings.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="settings-container">
+        <header>
+            <h1>Adhkar Settings</h1>
+            <p>Personalize your dhikr experience</p>
+        </header>
+
+        <form id="settings-form">
+            <div class="input-group">
+                <label for="interval">Reminder Interval (minutes)</label>
+                <input type="number" id="interval" min="1" max="1440" required>
+                <small>How often the dhikr appears</small>
+            </div>
+
+            <div class="input-group">
+                <label for="duration">Display Duration (seconds)</label>
+                <input type="number" id="duration" min="2" max="60" required>
+                <small>How long the popup stays on screen</small>
+            </div>
+
+            <div class="input-group">
+                <label for="fontSize">Font Size (px)</label>
+                <input type="range" id="fontSize" min="16" max="48" step="1">
+                <span id="fontSizeValue">24px</span>
+            </div>
+
+            <div class="input-group">
+                <label for="position">Popup Position</label>
+                <select id="position">
+                    <option value="top-left">Top Left Corner</option>
+                    <option value="top-middle">Top Middle</option>
+                    <option value="top-right">Top Right Corner</option>
+                    <option value="bottom-left">Bottom Left Corner</option>
+                    <option value="bottom-middle">Bottom Middle</option>
+                    <option value="bottom-right">Bottom Right Corner</option>
+                </select>
+            </div>
+
+            <div class="color-row">
+                <div class="input-group color-group">
+                    <label for="bgColor">Background</label>
+                    <input type="color" id="bgColor">
+                </div>
+                <div class="input-group color-group">
+                    <label for="borderColor">Border</label>
+                    <input type="color" id="borderColor">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" id="cancelBtn" class="secondary">Cancel</button>
+                <button type="submit" id="saveBtn" class="primary">Save Settings</button>
+            </div>
+        </form>
+    </div>
+    <script src="settings.js"></script>
+</body>
+</html>

@@ -1,9 +1,12 @@
 {
   "settings": {
-    "interval_seconds": 600,
-    "popup_display_seconds": 8,
-    "font_size": 24,
-    "note": "Customize your settings: interval_seconds controls how often popups appear (300 = 5 minutes), popup_display_seconds controls how long they stay visible"
+    "interval_seconds": 60,
+    "popup_display_seconds": 10,
+    "font_size": 27,
+    "background_color": "#d7d7d0",
+    "border_color": "#ff0000",
+    "note": "Customize your settings: interval_seconds controls how often popups appear (300 = 5 minutes), popup_display_seconds controls how long they stay visible",
+    "popup_position": "bottom-right"
   },
   "adhkar": [
     "اللَّهُ أَكْبَرُ",

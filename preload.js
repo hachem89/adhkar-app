@@ -9,5 +9,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   sendResize: (width) => {
     ipcRenderer.send('resize-window', width);
-  }
+  },
+  getSettings: () => ipcRenderer.invoke('get-settings'),
+  saveSettings: (settings) => ipcRenderer.send('save-settings', settings)
 });
