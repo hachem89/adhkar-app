@@ -25,6 +25,9 @@
     "directories": {
       "buildResources": "build"
     },
+    "extraResources": [
+      "adhkar.json"
+    ],
     "win": {
       "target": [
         "nsis"

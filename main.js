@@ -9,13 +9,20 @@ let adhkarData = null;
 let popupWindow = null;
 let intervalTimer = null;
 
+// Use resource path for data to ensure it works when packaged
+function getResourcePath(relativePath) {
+  return app.isPackaged 
+    ? path.join(process.resourcesPath, relativePath)
+    : path.join(__dirname, relativePath);
+}
+
 // Load adhkar data
 function loadAdhkarData() {
   try {
-    const dataPath = path.join(__dirname, 'adhkar.json');
+    const dataPath = getResourcePath('adhkar.json');
     const rawData = fs.readFileSync(dataPath, 'utf8');
     adhkarData = JSON.parse(rawData);
-    console.log('Adhkar data loaded successfully');
+    console.log('Adhkar data loaded successfully from: ' + dataPath);
   } catch (error) {
     console.error('Error loading adhkar data:', error);
   }
@@ -143,13 +150,13 @@ function scheduleDhikrPopups() {
 // Create system tray
 function createTray() {
   // Create a simple icon (you can replace with a proper icon file)
-  const iconPath = path.join(__dirname, 'build', 'icon.png');
+  const iconPath = getResourcePath(path.join('build', 'icon.png'));
   
   tray = new Tray(iconPath);
   
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Adhkar Reminder',
+      label: 'Adhkar Reminder (Running)',
       enabled: false
     },
     {
