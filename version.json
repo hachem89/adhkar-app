@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
-  "downloadUrl": "https://github.com/hachem89/adhkar-app/releases/latest/download/Adhkar.Reminder.Setup.1.0.1.exe",
-  "releaseNotes": "A beautiful new Settings Window! You can now customize colors, font sizes, and choose from 6 different screen positions for your dhikr reminders."
+  "version": "1.0.2",
+  "downloadUrl": "https://github.com/hachem89/adhkar-app/releases/latest/download/Adhkar.Reminder.Setup.1.0.2.exe",
+  "releaseNotes": "Improved the update check system with clear visual feedback and dialog windows."
 }
