@@ -67,28 +67,24 @@ The installer will be generated in the `dist/` folder.
 ### System Tray
 The app lives in your system tray. Right-click the icon to:
 - **Show Dhikr Now**: Trigger a reminder immediately.
+- **Settings**: Open the customization window to change positions, colors, and timings.
 - **Check for Updates**: See if a new version is available.
 - **Exit**: Completely close the app.
 
-### Customizing Settings
-You can change the behavior of the app by editing the `adhkar.json` file.
-- **Windows**: Found in `C:\Users\YourUser\AppData\Local\Programs\adhkar-app\resources\adhkar.json`
-- **Mac/Linux**: Found in the `resources` folder of the installation path.
+### Customizing Settings (New! 🛠️)
+You no longer need to edit files manually! Right-click the tray icon and select **Settings** to:
+- 📍 **Choose Position**: Select from 6 different screen locations (Top-Left, Bottom-Middle, etc.).
+- 🎨 **Change Colors**: Pick your own background and border colors using a color picker.
+- 🕒 **Adjust Timings**: Set how often reminders appear and how long they stay.
+- 📏 **Scale Text**: Change the font size to your preference.
 
-```json
-{
-  "settings": {
-    "interval_seconds": 600,        // Reminders appear every 10 minutes
-    "popup_display_seconds": 8,     // Popups stay for 8 seconds
-    "font_size": 24                 // Size of the Arabic text
-  },
-  "adhkar": [
-    "سُبْحَانَ اللَّهِ",
-    "الْحَمْدُ لِلَّهِ",
-    // Add your own dhikr here!
-  ]
-}
-```
+> [!TIP]
+> Changes are applied **instantly** the moment you click "Save Settings"!
+
+### Advanced: Adding Custom Dhikr
+If you want to add your own remembrances, you can still edit the `adhkar.json` file:
+- **Windows**: `C:\Users\YourUser\AppData\Local\Programs\adhkar-app\resources\adhkar.json`
+- **Mac/Linux**: Found in the `resources` folder of the installation path.
 
 ---
 
