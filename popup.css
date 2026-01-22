@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: transparent;
+  font-family: 'Amiri', 'Traditional Arabic', 'Arabic Typesetting', serif;
+  overflow: hidden;
+}
+
+.popup-container {
+  background-color: #FFFFF0; /* Light ivory */
+  border: 3px solid #800000; /* Maroon */
+  border-radius: 15px;
+  padding: 20px 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  width: auto;  /* Dynamic width based on content */
+  min-width: 200px;  /* Minimum width */
+  max-width: 500px;  /* Maximum width */
+  max-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+.popup-container.fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+.dhikr-text {
+  color: #2C1810;
+  text-align: center;
+  line-height: 1.8;
+  font-weight: 600;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  direction: rtl;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* Support for Arabic fonts */
+@font-face {
+  font-family: 'Amiri';
+  src: local('Amiri'), local('Traditional Arabic');
+  font-display: swap;
+}
